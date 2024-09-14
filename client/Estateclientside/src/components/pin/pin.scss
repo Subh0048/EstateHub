@@ -1,4 +1,4 @@
-.popupContainer{
+.popcontainer{
   display: flex;
   gap: 20px;
 
@@ -9,7 +9,7 @@
     border-radius: 5px;
   }
 
-  .textContainer{
+  .textcontainer{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
