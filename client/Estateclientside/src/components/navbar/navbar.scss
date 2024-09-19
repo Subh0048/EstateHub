@@ -90,6 +90,7 @@ nav {
         position: relative;
         
         .notification{
+          
           position: absolute;
           top: -8px;
           right: -8px;
@@ -99,8 +100,8 @@ nav {
           width: 26px;
           height: 26px;
           display: flex;
-          align-items: center;
           justify-content: center;
+          align-items: center;
         }
 
       }
