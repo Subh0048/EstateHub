@@ -1,5 +1,6 @@
 import "./Profile.scss";
 import List from "../../components/list/List";
+import Chat from "../../components/Chat/Chat";
 
 function Profile() {
   return (
@@ -33,14 +34,16 @@ function Profile() {
             <h1>saved Lists</h1>
             <div>
                 
-
             </div>
           </div>
         </div>
       </div>
 
       <div className="chatContainer">
-        <div className="wrapper"></div>
+        <div className="wrapper">
+
+            <Chat/>
+        </div>
       </div>
     </div>
   );
