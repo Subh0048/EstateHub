@@ -2,44 +2,40 @@ import { useContext, useState } from "react";
 import "./login.scss";
 import { Link, useNavigate } from "react-router-dom";
 import apiRequest from "../../lib/apiRequest";
-import { AuthContext } from "../../context/AuthContext";
 
 function Login() {
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  const {updateUser} = useContext(AuthContext)
+  const [error, seterror] = useState("");
+  const [isloading,setisloading]=useState("false")
 
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handlesubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
-    setError("");
-    const formData = new FormData(e.target);
+    setisloading(true)
+    const formdata = new FormData(e.target);
+    const username = formdata.get("username");
 
-    const username = formData.get("username");
-    const password = formData.get("password");
+    const password = formdata.get("password");
 
     try {
       const res = await apiRequest.post("/auth/login", {
         username,
-        password,
+        password
       });
+      console.log(res);
+      
 
-      updateUser(res.data)
-
-      navigate("/");
-    } catch (err) {
-      setError(err.response.data.message);
-    } finally {
-      setIsLoading(false);
+      
+    } catch (error) {
+      seterror(error.response.data.message);
+    }finally{
+      setisloading(false)
     }
   };
   return (
     <div className="login">
       <div className="formContainer">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handlesubmit}>
           <h1>Welcome back</h1>
           <input
             name="username"
@@ -55,7 +51,7 @@ function Login() {
             required
             placeholder="Password"
           />
-          <button disabled={isLoading}>Login</button>
+          <button disabled={setisloading}>Login</button>
           {error && <span>{error}</span>}
           <Link to="/register">{"Don't"} you have an account?</Link>
         </form>
