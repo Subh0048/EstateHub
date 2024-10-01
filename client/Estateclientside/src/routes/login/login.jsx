@@ -1,41 +1,48 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import "./login.scss";
 import { Link, useNavigate } from "react-router-dom";
 import apiRequest from "../../lib/apiRequest";
 
 function Login() {
   const [error, seterror] = useState("");
-  const [isloading,setisloading]=useState("false")
 
   const navigate = useNavigate();
 
-  const handlesubmit = async (e) => {
+  const handle = async (e) => {
     e.preventDefault();
-    setisloading(true)
     const formdata = new FormData(e.target);
     const username = formdata.get("username");
-
     const password = formdata.get("password");
+
+    // Log username and password to verify
+    console.log("Username:", username);
+    console.log("Password:", password);
 
     try {
       const res = await apiRequest.post("/auth/login", {
         username,
-        password
+        password,
       });
-      console.log(res);
-      
+      console.log("Response:", res);
 
-      
+      // If login is successful, store token or user data in localStorage
+      localStorage.setItem("user", JSON.stringify(res.data));
+
+      // Navigate to the homepage after login
+      navigate("/");
     } catch (error) {
-      seterror(error.response.data.message);
-    }finally{
-      setisloading(false)
+      // Log the error response
+      console.error("Error Response:", error.response);
+
+      // Set the error message if it exists
+      seterror(error.response?.data?.message || "Login failed. Please try again.");
     }
   };
+
   return (
     <div className="login">
       <div className="formContainer">
-        <form onSubmit={handlesubmit}>
+        <form onSubmit={handle}>
           <h1>Welcome back</h1>
           <input
             name="username"
@@ -51,7 +58,7 @@ function Login() {
             required
             placeholder="Password"
           />
-          <button disabled={setisloading}>Login</button>
+          <button>Login</button>
           {error && <span>{error}</span>}
           <Link to="/register">{"Don't"} you have an account?</Link>
         </form>

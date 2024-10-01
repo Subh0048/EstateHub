@@ -49,17 +49,17 @@ export const login = async (req, res) => {
          id:user.id
       },process.env.SECRET_KEY,{expiresIn:age})
 
-        const{password:userPassword,...userinfo} =user
+        const{ password:userPassword, ...userinfo} =user
     res
       .cookie("token", token, {
         httpOnly: true,
         maxAge: age,
       })
-      .status(401)
+      .status(200)
       .json(userinfo );
   } catch (error) {
     console.log("error occur");
-    res.status(5000).json({ message: "Failed to login" });
+    res.status(500).json({ message: "Failed to login" });
   }
 };
 export const logout = (req, res) => {
