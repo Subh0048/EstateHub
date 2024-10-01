@@ -3,15 +3,22 @@ import List from "../../components/list/List";
 import Chat from "../../components/Chat/Chat";
 import { useNavigate } from "react-router-dom";
 import apiRequest from "../../lib/apiRequest";
+import { useContext} from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 function Profile() {
 
+  const{updateUser,currentUser} =useContext(AuthContext)
   const navigate = useNavigate();
+
+  
+
+ 
 
   const handleLogout = async () => {
     try {
-       const res = await apiRequest.post("/auth/logout");
-      localStorage.removeItem("user")
+       await apiRequest.post("/auth/logout");
+      updateUser(null)
       navigate("/");
     } catch (err) {
       console.log(err);
@@ -23,19 +30,22 @@ function Profile() {
         <div className="wrapper">
           <div className="title">
             <h1>user information</h1>
+           
             <button>update profile</button>
+           
+           
           </div>
           <div className="info">
             <span>
               Avatar:
               <img
-                src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                src={currentUser.avatar||"/noavatar.jpg"}
                 alt=""
               />
             </span>
-            <span>Username: subham sahu</span>
+            <span>Username:<b>{currentUser.username}</b></span>
             <span>
-              E-mail:<b>subhamsahu@gmail.com</b>
+              E-mail:<b>{currentUser.email}</b>
             </span>
             <button onClick={handleLogout}>Logout</button>
           </div>

@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import "./login.scss";
 import { Link, useNavigate } from "react-router-dom";
 import apiRequest from "../../lib/apiRequest";
+import { AuthContext } from "../../context/AuthContext";
 
 function Login() {
   const [error, seterror] = useState("");
+  const{updateUser} =useContext(AuthContext)
+
+
 
   const navigate = useNavigate();
 
@@ -26,7 +30,7 @@ function Login() {
       console.log("Response:", res);
 
       // If login is successful, store token or user data in localStorage
-      localStorage.setItem("user", JSON.stringify(res.data));
+      updateUser(res.data)
 
       // Navigate to the homepage after login
       navigate("/");

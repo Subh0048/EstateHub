@@ -14,6 +14,7 @@ function Layout() {
         <Outlet />
       </div>
     </div>
+    
   );
 }
 
