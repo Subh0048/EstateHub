@@ -3,22 +3,18 @@ import List from "../../components/list/List";
 import Chat from "../../components/Chat/Chat";
 import { useNavigate } from "react-router-dom";
 import apiRequest from "../../lib/apiRequest";
-import { useContext} from "react";
+import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import { Link } from "react-router-dom";
 
 function Profile() {
-
-  const{updateUser,currentUser} =useContext(AuthContext)
+  const { updateUser, currentUser } = useContext(AuthContext);
   const navigate = useNavigate();
-
-  
-
- 
 
   const handleLogout = async () => {
     try {
-       await apiRequest.post("/auth/logout");
-      updateUser(null)
+      await apiRequest.post("/auth/logout");
+      updateUser(null);
       navigate("/");
     } catch (err) {
       console.log(err);
@@ -30,20 +26,21 @@ function Profile() {
         <div className="wrapper">
           <div className="title">
             <h1>user information</h1>
-           
-            <button>update profile</button>
-           
-           
+
+            <Link to="/profile/update">
+              <button>Update Profile</button>
+            </Link>
+
+            
           </div>
           <div className="info">
             <span>
               Avatar:
-              <img
-                src={currentUser.avatar||"/noavatar.jpg"}
-                alt=""
-              />
+              <img src={currentUser.avatar || "/noavatar.jpg"} alt="" />
             </span>
-            <span>Username:<b>{currentUser.username}</b></span>
+            <span>
+              Username:<b>{currentUser.username}</b>
+            </span>
             <span>
               E-mail:<b>{currentUser.email}</b>
             </span>
@@ -57,17 +54,14 @@ function Profile() {
           <List />
           <div className="title">
             <h1>saved Lists</h1>
-            <div>
-                
-            </div>
+            <div></div>
           </div>
         </div>
       </div>
 
       <div className="chatContainer">
         <div className="wrapper">
-
-            <Chat/>
+          <Chat />
         </div>
       </div>
     </div>
