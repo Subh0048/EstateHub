@@ -1,5 +1,4 @@
 import prisma from "../lib/prisma.js";
-import jwt from "jsonwebtoken";
 
 export const getPosts = async (req, res) => {
   const query = req.query;
@@ -14,16 +13,25 @@ export const getPosts = async (req, res) => {
   }
 };
 
-
-
-
-
 export const getPost = async (req, res) => {
   const id = req.params.id;
   try {
     const post = await prisma.post.findUnique({
       where: { id },
+      include: {
+        postDetail: true,
+        user: {
+          select: {
+            username: true,
+            avatar: true,
+          },
+        },
+      },
     });
+    if (!post || !post.user) {
+      return res.status(404).json({ message: "Post or user not found" });
+    }
+
     res.status(200).json(post);
   } catch (err) {
     console.log(err);
@@ -31,17 +39,18 @@ export const getPost = async (req, res) => {
   }
 };
 
-
-
 export const addPost = async (req, res) => {
   const body = req.body;
   const tokenUserId = req.userId;
 
   try {
-    const newpost = await  prisma.post.create({
+    const newpost = await prisma.post.create({
       data: {
-        ...body,
+        ...body.postData,
         userId: tokenUserId,
+        postDetail: {
+          create: body.postDetail,
+        },
       },
     });
 
@@ -51,9 +60,6 @@ export const addPost = async (req, res) => {
     res.status(500).json({ message: "Failed to create post" });
   }
 };
-
-
-
 
 export const updatePost = async (req, res) => {
   try {

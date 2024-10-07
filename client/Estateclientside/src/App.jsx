@@ -2,6 +2,7 @@ import HomePage from "./routes/homePage/homePage";
 import ListPage from "./routes/listPage/listPage";
 import Singlepage from "./routes/singlepage/singlepage";
 import Profile from "./routes/Profile/Profile";
+import NewPostPage from "./routes/newpost page/newpost"
 
 import { Layout, RequireAuth } from "./routes/layout/layout";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -52,6 +53,10 @@ function App() {
         {
           path: "/profile/update",
           element: < ProfileUpdatePage/>,
+        },
+        {
+          path: "add",
+          element: <NewPostPage/>,
         }
 
       ]
