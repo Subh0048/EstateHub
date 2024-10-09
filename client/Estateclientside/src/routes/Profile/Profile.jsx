@@ -1,13 +1,15 @@
 import "./Profile.scss";
 import List from "../../components/list/List";
 import Chat from "../../components/Chat/Chat";
-import { useNavigate } from "react-router-dom";
+import { useLoaderData, useNavigate ,Await} from "react-router-dom";
 import apiRequest from "../../lib/apiRequest";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { Link } from "react-router-dom";
 
+
 function Profile() {
+  const data = useLoaderData();
   const { updateUser, currentUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -30,8 +32,6 @@ function Profile() {
             <Link to="/profile/update">
               <button>Update Profile</button>
             </Link>
-
-            
           </div>
           <div className="info">
             <span>
@@ -50,11 +50,23 @@ function Profile() {
           <div className="title">
             <h1>My List</h1>
             <Link to={"/add"}>
-            <button>create new post</button>
+              <button>create new post</button>
             </Link>
-
           </div>
-          <List />
+
+          {/* <Suspense fallback={<p>Loading...</p>}>
+            <Await
+              resolve={data.postResponse}
+              errorElement={<p>Error loading posts!</p>}
+            >
+              {(postResponse) => <List posts={postResponse.data.userPosts} />
+
+              }
+            </Await>
+
+          </Suspense> */}
+          <List/>
+          
           <div className="title">
             <h1>saved Lists</h1>
             <div></div>

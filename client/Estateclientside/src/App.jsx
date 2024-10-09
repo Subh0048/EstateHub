@@ -9,6 +9,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Register from "./routes/register/Register";
 import Login from "./routes/login/login";
 import ProfileUpdatePage from "./routes/profileUpdate/profileUpdate";
+import {profilePageLoader, singlePageLoader} from "./lib/loaders"
+import {listPageLoader}from "./lib/loaders"
 
 function App() {
   const router = createBrowserRouter([
@@ -23,10 +25,12 @@ function App() {
         {
           path: "/list",
           element: <ListPage />,
+          loader:listPageLoader
         },
         {
           path: "/:id",
           element: < Singlepage/>,
+          loader:singlePageLoader 
         },
         
         {
@@ -49,6 +53,7 @@ function App() {
         {
           path: "/profile",
           element: < Profile/>,
+          loader:profilePageLoader
         },
         {
           path: "/profile/update",

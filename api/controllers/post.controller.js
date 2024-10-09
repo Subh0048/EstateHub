@@ -2,9 +2,21 @@ import prisma from "../lib/prisma.js";
 
 export const getPosts = async (req, res) => {
   const query = req.query;
+  console.log(query);
 
   try {
-    const posts = await prisma.post.findMany();
+    const posts = await prisma.post.findMany({
+      where: {
+        city: query.city || undefined,
+        type: query.type || undefined,
+        property: query.property || undefined,
+        bedroom: parseInt(query.bedroom) || undefined,
+        price: {
+          gte: parseInt(query.minPrice) || undefined,
+          lte: parseInt(query.maxPrice) || undefined,
+        },
+      },
+    });
 
     res.status(200).json(posts);
   } catch (err) {
@@ -28,9 +40,28 @@ export const getPost = async (req, res) => {
         },
       },
     });
+
     if (!post || !post.user) {
       return res.status(404).json({ message: "Post or user not found" });
     }
+
+    // const token = req.cookies?.token;
+
+    // if (token) {
+    //   jwt.verify(token, process.env.SECRET_KEY, async (err, payload) => {
+    //     if (!err) {
+    //       const saved = await prisma.savedPost.findUnique({
+    //         where: {
+    //           userId_postId: {
+    //             postId: id,
+    //             userId: payload.id,
+    //           },
+    //         },
+    //       });
+    //       res.status(200).json({ ...post, isSaved: saved ? true : false });
+    //     }
+    //   });
+    // }
 
     res.status(200).json(post);
   } catch (err) {
