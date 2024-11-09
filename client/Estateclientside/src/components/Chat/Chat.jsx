@@ -1,9 +1,11 @@
 
 import { useState } from "react";
 import "./Chat.scss";
-function Chat() {
+function Chat({ chats}) {
 
-  const[chat,setchat] =useState(true)
+  const[chat,setchat] =useState(true);
+  console.log(chats);
+  
 
 
   return (

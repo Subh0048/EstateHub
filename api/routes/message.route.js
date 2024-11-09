@@ -6,7 +6,7 @@ import { verifyToken } from "../middleware/verifyToken.js";
 
 const messageRoute = express.Router();
 
-messageRoute.post("/:id", verifyToken,addMessage);
+messageRoute.post("/:chatId", verifyToken,addMessage);
 
 
 export default messageRoute;

@@ -13,10 +13,12 @@ export const getUsers = async (req, res) => {
 
 export const getUser = async (req, res) => {
   const id = req.params.id;
+ 
+  
   try {
     const user = await prisma.user.findUnique({
       where: {
-        id,
+        id
       },
     });
     res.status(200).json(user);
