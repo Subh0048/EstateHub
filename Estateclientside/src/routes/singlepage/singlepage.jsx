@@ -1,6 +1,6 @@
 
 import DOMPurify from 'dompurify'
-import "./singlePage.scss";
+import "./singlepage.scss";
 import Slider from "../../components/slider/Slider";
 import { singlePostData, userData } from "../../lib/dummydata";
 import Map from "../../components/map/Map";
