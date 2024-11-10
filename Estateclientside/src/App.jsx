@@ -1,5 +1,5 @@
 import HomePage from "./routes/homePage/homePage";
-import ListPage from "./routes/listPage/listPage";
+import ListPage from "./routes/listpage/listpage";
 import Singlepage from "./routes/singlepage/singlepage";
 import Profile from "./routes/Profile/Profile";
 import NewPostPage from "./routes/newpost page/newpost"
