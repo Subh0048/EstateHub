@@ -82,7 +82,6 @@ model User {
   posts Post[]
   savedPosts SavedPost[]
   chats Chat[] @relation(fields: [chatIDs], references: [id])
-
   chatIDs String[]  @db.ObjectId
 }
 

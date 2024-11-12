@@ -12,6 +12,7 @@ import {AuthContext} from '../../context/AuthContext'
 
 function SinglePage() {
   let post = useLoaderData()
+  
   // const{currentUser }=useContext(AuthContext)
   // const[saved,setsaved]= useState()
   

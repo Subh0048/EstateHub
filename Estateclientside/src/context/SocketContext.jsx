@@ -1,20 +1,18 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { io } from "socket.io-client";
-import { AuthContext } from "./AuthContext";
 
 export const SocketContext = createContext();
 
 export const SocketContextProvider = ({ children }) => {
-  const { currentUser } = useContext(AuthContext);
-  const [socket, setSocket] = useState(null);
+  const [socket, setsocket] = useState(null);
 
   useEffect(() => {
-    setSocket(io("http://localhost:4000"));
+    const newSocket = io("http://localhost:4000"); // Initialize the socket connection
+    setsocket(newSocket);
+
+    // Cleanup on unmount
+    return () => newSocket.close();
   }, []);
-
-  useEffect(() => {
-  currentUser && socket?.emit("newUser", currentUser.id);
-  }, [currentUser, socket]);
 
   return (
     <SocketContext.Provider value={{ socket }}>
@@ -22,5 +20,3 @@ export const SocketContextProvider = ({ children }) => {
     </SocketContext.Provider>
   );
 };
-
-

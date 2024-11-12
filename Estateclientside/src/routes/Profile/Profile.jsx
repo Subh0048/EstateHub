@@ -1,21 +1,17 @@
 import "./Profile.scss";
 import List from "../../components/list/List";
 import Chat from "../../components/Chat/Chat";
-import { useLoaderData, useNavigate ,Await} from "react-router-dom";
+import { useLoaderData, useNavigate, Await } from "react-router-dom";
 import apiRequest from "../../lib/apiRequest";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { Link } from "react-router-dom";
 import { Suspense } from "react";
 
-
 function Profile() {
   const data = useLoaderData();
   const { updateUser, currentUser } = useContext(AuthContext);
   const navigate = useNavigate();
-
-  
-  
 
   const handleLogout = async () => {
     try {
@@ -63,14 +59,14 @@ function Profile() {
               resolve={data.postResponse}
               errorElement={<p>Error loading posts!</p>}
             >
-              {(postResponse) => <List posts={postResponse.data.userPosts} />
+              {(postResponse) => <List posts={postResponse.data.savedPosts} />
 
               }
             </Await>
 
           </Suspense> */}
-          <List/>
-          
+          <List />
+
           <div className="title">
             <h1>saved Lists</h1>
             <div></div>
@@ -80,19 +76,14 @@ function Profile() {
 
       <div className="chatContainer">
         <div className="wrapper">
-
-        <Suspense fallback={<p>Loading...</p>}>
+          <Suspense fallback={<p>Loading...</p>}>
             <Await
               resolve={data.chatResponse}
               errorElement={<p>Error loading chats!</p>}
             >
-              {(chatResponse) =>
-                 <Chat chats={chatResponse.data} />}
-              
+              {(chatResponse) => <Chat chats={chatResponse.data} />}
             </Await>
-
-          </Suspense> 
-          {/* <Chat /> */}
+          </Suspense>
         </div>
       </div>
     </div>

@@ -45,23 +45,26 @@ export const getPost = async (req, res) => {
       return res.status(404).json({ message: "Post or user not found" });
     }
 
-    // const token = req.cookies?.token;
 
-    // if (token) {
-    //   jwt.verify(token, process.env.SECRET_KEY, async (err, payload) => {
-    //     if (!err) {
-    //       const saved = await prisma.savedPost.findUnique({
-    //         where: {
-    //           userId_postId: {
-    //             postId: id,
-    //             userId: payload.id,
-    //           },
-    //         },
-    //       });
-    //       res.status(200).json({ ...post, isSaved: saved ? true : false });
-    //     }
-    //   });
-    // }
+
+    
+    const token = req.cookies?.token;
+
+    if (token) {
+      jwt.verify(token, process.env.SECRET_KEY, async (err, payload) => {
+        if (!err) {
+          const saved = await prisma.savedPost.findUnique({
+            where: {
+              userId_postId: {
+                postId: id,
+                userId: payload.id,
+              },
+            },
+          });
+          res.status(200).json({ ...post, isSaved: saved ? true : false });
+        }
+      });
+    }
 
     res.status(200).json(post);
   } catch (err) {
