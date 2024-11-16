@@ -1,7 +1,7 @@
 import "./Profile.scss";
 import List from "../../components/list/List";
 import Chat from "../../components/Chat/Chat";
-import { useLoaderData, useNavigate, Await } from "react-router-dom";
+import { Await, useLoaderData, useNavigate } from "react-router-dom";
 import apiRequest from "../../lib/apiRequest";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
@@ -54,22 +54,33 @@ function Profile() {
             </Link>
           </div>
 
-          {/* <Suspense fallback={<p>Loading...</p>}>
+          <Suspense fallback={<p>Loading...</p>}>
             <Await
               resolve={data.postResponse}
-              errorElement={<p>Error loading posts!</p>}
+              errorElement={<p>Error loading post!</p>}
             >
-              {(postResponse) => <List posts={postResponse.data.savedPosts} />
-
-              }
+              {(postResponse) => <List posts={postResponse.data.userPosts} />}
             </Await>
-
-          </Suspense> */}
-          <List />
+          </Suspense>
+          {/* <List /> */}
 
           <div className="title">
             <h1>saved Lists</h1>
-            <div></div>
+
+            </div>
+
+            <div>
+
+            <Suspense fallback={<p>Loading...</p>}>
+              <Await
+                resolve={data.postResponse}
+                errorElement={<p>Error loading post!</p>}
+              >
+                {(postResponse) => (
+                  <List posts={postResponse.data.savedposts} />
+                )}
+              </Await>
+            </Suspense>
           </div>
         </div>
       </div>

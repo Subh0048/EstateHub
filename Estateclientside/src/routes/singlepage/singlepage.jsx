@@ -1,47 +1,37 @@
-
-import DOMPurify from 'dompurify'
+import DOMPurify from "dompurify";
 import "./singlepage.scss";
 import Slider from "../../components/slider/Slider";
-import { singlePostData, userData } from "../../lib/dummydata";
-import Map from "../../components/map/Map";
-import apiRequest from "../../lib/apiRequest"
-import { useLoaderData, useNavigate } from "react-router-dom";
-import { useContext, useState } from 'react';
-import {AuthContext} from '../../context/AuthContext'
 
+import Map from "../../components/map/Map";
+import apiRequest from "../../lib/apiRequest";
+import { useLoaderData, useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 function SinglePage() {
-  let post = useLoaderData()
-  
-  // const{currentUser }=useContext(AuthContext)
-  // const[saved,setsaved]= useState()
-  
+  let post = useLoaderData();
 
-  const purify = DOMPurify.sanitize;// provide styling to desc 
-  // const navigate = useNavigate()
-  
-  // const handleSave = async ()=>{
-  //   setsaved((prev)=>!prev)
-  //   if(!currentUser){
-  //     navigate("/login")}
-  //   try {
-  //     await  apiRequest.post("users/save",{postId: post.id})
-      
+  console.log(post)
 
-  //     }
+  const { currentUser } = useContext(AuthContext);
+  const [saved, setsaved] = useState(post.isSaved);
 
-      
-  //   catch (err) {
-  //     console.log(err);
-  //     setsaved((prev)=>!prev)
-      
-      
-  //   }
-  // }
+  const navigate = useNavigate();
 
-  
-  
+  const handleSave = async () => {
+    setsaved((prev) => !prev);
+    if (!currentUser) {
+      navigate("/login");
+    }
+    try {
+      await apiRequest.post("/users/save", { postId:post.id });
+    } catch (err) {
+      console.log(err);
+      setsaved((prev) => !prev);
+    }
+  };
 
+  const purify = DOMPurify.sanitize; // provide styling to desc
   return (
     <div className="singlePage">
       <div className="details">
@@ -62,7 +52,10 @@ function SinglePage() {
                 <span>{post.user.username}</span>
               </div>
             </div>
-            <div className="bottom" dangerouslySetInnerHTML={{__html:purify(post.postDetail.desc)}}></div>
+            <div
+              className="bottom"
+              dangerouslySetInnerHTML={{ __html: purify(post.postDetail.desc) }}
+            ></div>
           </div>
         </div>
       </div>
@@ -74,11 +67,11 @@ function SinglePage() {
               <img src="./utility.png" alt="" />
               <div className="featureText">
                 <span>Utilities</span>
-               {
-                post.postDetail.utilities === "owner" ?(
-                <p>owner is responsible</p>):(
-                <p>Tenant is responsible</p>)
-               }
+                {post.postDetail.utilities === "owner" ? (
+                  <p>owner is responsible</p>
+                ) : (
+                  <p>Tenant is responsible</p>
+                )}
               </div>
             </div>
 
@@ -98,7 +91,7 @@ function SinglePage() {
               <img src="./fee.png" alt="" />
               <div className="featureText">
                 <span>Income Policy</span>
-               <p>{post.postDetail.income}</p>
+                <p>{post.postDetail.income}</p>
               </div>
             </div>
           </div>
@@ -142,7 +135,6 @@ function SinglePage() {
               </div>
             </div>
 
-
             <div className="feature">
               <img src="./fee.png" alt="" />
               <div className="featureText">
@@ -150,7 +142,6 @@ function SinglePage() {
                 <p>{post.postDetail.restaurant}m away</p>
               </div>
             </div>
-            
           </div>
           <p className="title">Location</p>
           <div className="mapContainer">
@@ -161,9 +152,11 @@ function SinglePage() {
               <img src="/.chat.png" alt="" />
               send message
             </button>
-            <button >
+            <button onClick={handleSave}  style={{
+              backgroundColor:saved ? "#fece51":"white",
+            }}>
               <img src="./save.png" alt="" />
-             <p>save</p>
+              {saved ? "place saved ":"save the place"}
             </button>
           </div>
         </div>

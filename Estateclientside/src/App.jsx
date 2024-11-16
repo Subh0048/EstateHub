@@ -11,6 +11,9 @@ import Login from "./routes/login/login";
 import ProfileUpdatePage from "./routes/profileUpdate/profileUpdate";
 import {profilePageLoader, singlePageLoader} from "./lib/loaders"
 import {listPageLoader}from "./lib/loaders"
+import AboutUs from "./routes/About/About";
+import ContactUs from "./routes/Contact/contact";
+import AgentPage from "./routes/Agents/Agent";
 
 function App() {
   const router = createBrowserRouter([
@@ -41,7 +44,20 @@ function App() {
           path:"login",
           element:<Login/>
 
-        }
+        },
+        {
+          path:"About",
+          element:<AboutUs/>
+        },
+        {
+          path:"contact",
+          element:<ContactUs/>
+        },
+        {
+          path:"agent",
+          element:<AgentPage/>
+        },
+        
 
       ],
     },

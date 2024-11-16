@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import "./Chat.scss";
 import { AuthContext } from "../../context/AuthContext";
 import apiRequest from "../../lib/apiRequest";
@@ -8,7 +8,14 @@ import { SocketContext } from "../../context/SocketContext";
 function Chat({ chats }) {
   const [chat, setchat] = useState(null);
   const { currentUser } = useContext(AuthContext);
-  const{socket}= useContext(SocketContext);
+  const { socket } = useContext(SocketContext);
+
+  const messageendref = useRef()
+
+  useEffect(()=>{
+    messageendref.current?.scrollIntoView({behaviour:"smooth"});
+
+  },[chat])
 
   const handleopenchat = async (id, receive) => {
     try {
@@ -31,6 +38,10 @@ function Chat({ chats }) {
       const res = await apiRequest.post("/messages/" + chat.id, { text });
       setchat((prev) => ({ ...prev, messages: [...prev.messages, res.data] }));
       e.target.reset();
+      socket.emit("sendmessage", {
+        receiverId: chat.receive.id,
+        data: res.data,
+      });
     } catch (error) {
       if (error.response) {
         console.log("API Error:", error.response.data); // Response from server
@@ -43,14 +54,26 @@ function Chat({ chats }) {
     }
   };
 
-  const testsocket = ()=>{
-    socket.emit("test","hi from subham")
-  }
+  useEffect(() => {
+
+    const read = async ()=>{
+      try {
+        await apiRequest.put("/chats/read" + chat.id)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    if ((chat && socket)) {
+      socket.on("getmessage", (data) => {
+        if (chat.id === data.chatId) {
+          setchat((prev) => ({ ...prev, messages: [...prev.messages, data] }));
+        }
+      });
+    }
+  }, [socket, chat]);
 
   return (
     <div className="chat">
-
-      <button onClick={testsocket}>test io</button>
       <div className="messages">
         <h1>Messages</h1>
         {chats?.map((c) => (
@@ -58,7 +81,7 @@ function Chat({ chats }) {
             className="message"
             key={c.id}
             style={{
-              backgroundColor: c.seenBy.includes(currentUser.id)
+              backgroundColor: c.seenBy.includes(currentUser.id)|| chat?.id === c.id
                 ? "white"
                 : "#fecd514e",
             }}
@@ -100,7 +123,10 @@ function Chat({ chats }) {
                 <span>{format(message.createdAt)}</span>
               </div>
             ))}
+            <div ref={messageendref}></div>
           </div>
+
+          
           <form onSubmit={handlesubmit} className="bottom">
             <textarea name="text"></textarea>
             <button>send</button>

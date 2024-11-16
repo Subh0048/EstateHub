@@ -16,9 +16,21 @@ export const listPageLoader = async ({ request, params }) => {
   
 };
 
+
+
 export const profilePageLoader = async () => {
-  const postPromise = apiRequest("/users/profilePosts");
+  const postPromise = apiRequest("/users/profilePosts")
+  .catch((error) => {
+    console.error("Failed to fetch profile posts:", error.response?.data || error.message);
+    throw error; // Re-throw to ensure `defer` handles it correctly
+  });
+
+  
   const chatPromise = apiRequest("/chats")
+  .catch((error) => {
+    console.error("Failed to fetch chats:", error.response?.data || error.message);
+    throw error;
+  });
  
   return defer({
     postResponse: postPromise,

@@ -7,15 +7,14 @@ import UploadWidget from "../../components/uploadWidget/UploadWidget";
 
 function ProfileUpdatePage() {
   const { currentUser, updateUser } = useContext(AuthContext);
-  const [error, seterror] = useState();
-  const [avatar, setavatar] = useState([]);
+  const [error, setError] = useState(null);
+  const [avatar, setAvatar] = useState([]);
 
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
-
     const { username, email, password } = Object.fromEntries(formData);
 
     try {
@@ -23,15 +22,14 @@ function ProfileUpdatePage() {
         username,
         email,
         password,
-        avatar:avatar[0]
+        avatar: avatar[0], // Assuming avatar[0] holds the image URL or file object
       });
       updateUser(res.data);
       navigate("/profile");
       console.log(res.data);
-      
-    } catch (error) {
-      console.log(err);
-      seterror(err.response.data.message);
+    } catch (err) {
+      console.error("Profile update error:", err);
+      setError(err.response?.data?.message || "Failed to update profile");
     }
   };
 
@@ -47,6 +45,7 @@ function ProfileUpdatePage() {
               name="username"
               type="text"
               defaultValue={currentUser.username}
+              required
             />
           </div>
           <div className="item">
@@ -56,6 +55,7 @@ function ProfileUpdatePage() {
               name="email"
               type="email"
               defaultValue={currentUser.email}
+              required
             />
           </div>
           <div className="item">
@@ -63,26 +63,24 @@ function ProfileUpdatePage() {
             <input id="password" name="password" type="password" />
           </div>
           <button>Update</button>
-          {error && <span>error</span>}
+          {error && <span className="error">{error}</span>}
         </form>
       </div>
       <div className="sideContainer">
         <img
-          src={avatar[0] || currentUser.avatar|| "/noavatar.jpg"}
-          alt=""
+          src={avatar[0] || currentUser.avatar || "/noavatar.jpg"}
+          alt="Avatar"
           className="avatar"
         />
-        <UploadWidget  uwConfig={{
-          cloudName:"dblzzzmsl",
-          uploadPreset:"estate",
-          multiple:false,
-          maxImageFileSize:2000000,
-          folder:"avatars"
-
-
-        
-        }}
-        setState={setavatar}
+        <UploadWidget
+          uwConfig={{
+            cloudName: "dblzzzmsl",
+            uploadPreset: "estate",
+            multiple: false,
+            maxImageFileSize: 2000000,
+            folder: "avatars",
+          }}
+          setState={setAvatar}
         />
       </div>
     </div>

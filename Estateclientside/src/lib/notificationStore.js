@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import apiRequest from "./apiRequest";
 
-export const useNotificationStore = create((set) => ({
+ export const usenotificationstore = create((set) => ({
   number: 0,
   fetch: async () => {
     const res = await apiRequest("/users/notification");
