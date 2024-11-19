@@ -1,5 +1,6 @@
 import prisma from "../lib/prisma.js";
 import bcrypt from "bcrypt";
+import nodemailer from "nodemailer"
 
 export const getUsers = async (req, res) => {
   try {
@@ -159,5 +160,33 @@ export const notification = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "failed to get profileposts" });
+  }
+};
+export const sendmail = async (req, res) => {
+  const { name, email, subject, message } = req.body;
+
+  try {
+    
+    const transporter = nodemailer.createTransport({
+      service: "gmail", // or another email service
+      auth: {
+          user: process.env.MYEMAIL, // Your email
+          pass: process.env.EMAILPASSWORD,  // Your email password
+      },
+  });
+
+  const mailOptions = {
+    from: email,
+    to:process.env.STOREMAIL, // Where you want to receive emails
+    subject: subject,
+    text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
+};
+await transporter.sendMail(mailOptions);
+
+    
+    res.status(200).json({message:"email send successfully"});
+  } catch (error) {
+    console.error("Error sending email:", error);
+    res.status(500).json({ error: "Failed to send email." });
   }
 };

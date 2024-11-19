@@ -69,7 +69,8 @@ function App() {
         {
           path: "/profile",
           element: < Profile/>,
-          loader:profilePageLoader
+          loader:profilePageLoader,
+        
         },
         {
           path: "/profile/update",
