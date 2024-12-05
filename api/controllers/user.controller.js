@@ -187,6 +187,6 @@ await transporter.sendMail(mailOptions);
     res.status(200).json({message:"email send successfully"});
   } catch (error) {
     console.error("Error sending email:", error);
-    res.status(500).json({ error: "Failed to send email." });
+    res.status(500).json({  error: `Failed to send email. Details: ${error.message}` });
   }
 };
