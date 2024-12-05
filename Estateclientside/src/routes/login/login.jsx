@@ -65,6 +65,7 @@ function Login() {
           <button>Login</button>
           {error && <span>{error}</span>}
           <Link to="/register">{"Don't"} you have an account?</Link>
+          <Link to="/forgotpassword"> forgot password?</Link>
         </form>
       </div>
       <div className="imgContainer">

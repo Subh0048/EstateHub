@@ -14,6 +14,8 @@ import {listPageLoader}from "./lib/loaders"
 import AboutUs from "./routes/About/About";
 import ContactUs from "./routes/Contact/contact";
 import AgentPage from "./routes/Agents/Agent";
+import ForgotPassword from "./routes/ForgotPassword/ForgotPassword";
+import ResetPassword from "./routes/ResetPassword/ResetPassword";
 
 function App() {
   const router = createBrowserRouter([
@@ -56,6 +58,14 @@ function App() {
         {
           path:"agent",
           element:<AgentPage/>
+        },
+        {
+          path:"forgotpassword",
+          element:<ForgotPassword/>
+        },
+        {
+          path:"resetpassword",
+          element:<ResetPassword/>
         },
         
 

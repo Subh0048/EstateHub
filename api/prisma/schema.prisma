@@ -63,7 +63,7 @@ model SavePost {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   user      User     @relation(fields: [userId], references: [id])
   post      Post     @relation(fields: [postId], references: [id])
-  userId    String    @db.ObjectId
+  userId    String   @db.ObjectId
   postId    String   @db.ObjectId
   createdAt DateTime @default(now())
 
@@ -71,16 +71,17 @@ model SavePost {
 }
 
 model User {
-  id         String     @id @default(auto()) @map("_id") @db.ObjectId
-  email      String     @unique
-  username   String     @unique
-  password   String
-  avatar     String?
-  createdAt  DateTime   @default(now())
-  posts      Post[]
-  savedPosts SavePost[]
-  chats      Chat[]     @relation(fields: [chatIDs], references: [id])
-  chatIDs    String[]   @db.ObjectId
+  id                 String     @id @default(auto()) @map("_id") @db.ObjectId
+  email              String     @unique
+  username           String     @unique
+  password           String
+  avatar             String?
+  resetPasswordToken String?
+  createdAt          DateTime   @default(now())
+  posts              Post[]
+  savedPosts         SavePost[]
+  chats              Chat[]     @relation(fields: [chatIDs], references: [id])
+  chatIDs            String[]   @db.ObjectId
 }
 
 model Chat {
